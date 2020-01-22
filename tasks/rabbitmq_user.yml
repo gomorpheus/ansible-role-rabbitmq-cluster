@@ -22,9 +22,6 @@
       user: "{{ rabbitmq_user }}"
       password: "{{ rabbitmq_password }}"
       vhost: "{{ rabbitmq_vhost_name }}"
-#      configure_priv: .*
-#      read_priv: .*
-#      write_priv: .*
       permissions:
           - vhost: "{{ rabbitmq_vhost_name }}"
             configure_priv: .*
@@ -33,4 +30,5 @@
       state: present
   delegate_to: "{{ groups['rabbitmq'][0] }}"
   run_once: true
+### TODO Check https://github.com/ansible/ansible/pull/50381 If it's been merged, remove ignore_errors
   ignore_errors: true

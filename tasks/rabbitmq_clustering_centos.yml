@@ -29,8 +29,6 @@
     mode: 0400
   register: cookiechange
 
-
-
 - name: Reset RabbitMQ on hosts where the cookie was changed
   block:
     - name: Forget Cluster nodes being reset
