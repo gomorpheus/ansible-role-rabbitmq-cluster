@@ -4,20 +4,20 @@
     name: rabbitmq-server
     enabled: true
     state: started
-  delegate_to: "{{ groups['rabbitmq'][0] }}"
+  delegate_to: "{{ groups[rabbitmq_group][0] }}"
   run_once: true
 
 - name: Get Erlang Cookie from master node
   slurp:
     src: /var/lib/rabbitmq/.erlang.cookie
   register: mastercookiefile
-  delegate_to: "{{ groups['rabbitmq'][0] }}"
+  delegate_to: "{{ groups[rabbitmq_group][0] }}"
   run_once: true
 
 - name: Set Erlang Cookie fact from master node
   set_fact:
     mastercookie: "{{ mastercookiefile['content'] | b64decode }}"
-  delegate_to: "{{ groups['rabbitmq'][0] }}"
+  delegate_to: "{{ groups[rabbitmq_group][0] }}"
   run_once: true
 
 - name: Set Erlang Cookie on all nodes based on master
@@ -33,7 +33,7 @@
   block:
     - name: Forget Cluster nodes being reset
       command: rabbitmqctl forget_cluster_node rabbit@{{ ansible_hostname }}
-      delegate_to: "{{ groups['rabbitmq'][0] }}"
+      delegate_to: "{{ groups[rabbitmq_group][0] }}"
       ignore_errors: true
 
     - name: RabbitMQ | sending sigterm to any running rabbitmq processes

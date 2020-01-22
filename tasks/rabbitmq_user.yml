@@ -9,12 +9,13 @@
     read_priv: .*
     write_priv: .*
     state: present
+  delegate_to: "{{ groups[rabbitmq_group][0] }}"
   run_once: true
 
 - name: RabbitMQ | creating vhost
   rabbitmq_vhost:
       name: "{{ rabbitmq_vhost_name }}"
-  delegate_to: "{{ groups['rabbitmq'][0] }}"
+  delegate_to: "{{ groups[rabbitmq_group][0] }}"
   run_once: true
 
 - name: RabbitMQ | creating user
@@ -28,7 +29,7 @@
             read_priv: .*
             write_priv: .*
       state: present
-  delegate_to: "{{ groups['rabbitmq'][0] }}"
+  delegate_to: "{{ groups[rabbitmq_group][0] }}"
   run_once: true
 ### TODO Check https://github.com/ansible/ansible/pull/50381 If it's been merged, remove ignore_errors
   ignore_errors: true

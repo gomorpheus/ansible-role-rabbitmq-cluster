@@ -9,7 +9,7 @@
     line: "{{item}} {{ hostvars[item].ansible_hostname }}"
     state: present
   when: hostvars[item].ansible_hostname is defined
-  with_items: "{{ groups.rabbitmq }}"
+  with_items: "{{ groups[rabbitmq_group] }}"
 
 # Install Repository, Prerequisites, and RabbitMQ for EL7
 - include_tasks: rabbitmq_packages_centos.yml
@@ -21,7 +21,7 @@
   block:
     - name: Set master name as first host in inventory
       set_fact:
-        master_node: "{{ groups['rabbitmq'][0] }}"
+        master_node: "{{ groups[rabbitmq_group][0] }}"
 
     - include_tasks: rabbitmq_clustering_centos.yml
   when: groups['rabbitmq'] | length > 1
