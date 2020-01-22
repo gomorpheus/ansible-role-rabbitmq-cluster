@@ -1,0 +1,39 @@
+- name: Install yum-utils
+  package:
+    name: yum-utils
+    state: present
+
+- name: Add RabbitMQ Erlang repository GPG Key
+  rpm_key:
+    state: present
+    key: https://packagecloud.io/rabbitmq/erlang/gpgkey
+
+- name: Add RabbitMQ repository GPG Key
+  rpm_key:
+    state: present
+    key: https://github.com/rabbitmq/signing-keys/releases/download/2.0/rabbitmq-release-signing-key.asc
+
+- name: Add RabbitMQ Erlang repository
+  yum_repository:
+    name: rabbitmq-erlang
+    description: rabbitmq-erlang
+    file: rabbitmq-erlang
+    baseurl: https://packagecloud.io/rabbitmq/erlang/el/7/$basearch
+    gpgcheck: true
+    enabled: true
+    repo_gpgcheck: false
+
+- name: Add RabbitMQ repository
+  yum_repository:
+    name: rabbitmq_rabbitmq-server
+    description: rabbitmq-server
+    file: rabbitmq-server
+    baseurl: https://packagecloud.io/rabbitmq/rabbitmq-server/el/7/$basearch
+    gpgcheck: true
+    enabled: true
+    repo_gpgcheck: false
+
+- name: Install RabbitMQ
+  package:
+    name: rabbitmq-server-3.7*
+    state: present

@@ -1,0 +1,66 @@
+---
+- name: Enable and Start RabbitMQ Service
+  systemd:
+    name: rabbitmq-server
+    enabled: true
+    state: started
+  delegate_to: "{{ groups['rabbitmq'][0] }}"
+  run_once: true
+
+- name: Get Erlang Cookie from master node
+  slurp:
+    src: /var/lib/rabbitmq/.erlang.cookie
+  register: mastercookiefile
+  delegate_to: "{{ groups['rabbitmq'][0] }}"
+  run_once: true
+
+- name: Set Erlang Cookie fact from master node
+  set_fact:
+    mastercookie: "{{ mastercookiefile['content'] | b64decode }}"
+  delegate_to: "{{ groups['rabbitmq'][0] }}"
+  run_once: true
+
+- name: Set Erlang Cookie on all nodes based on master
+  copy:
+    content: "{{ mastercookie }}"
+    dest: /var/lib/rabbitmq/.erlang.cookie
+    owner: rabbitmq
+    group: rabbitmq
+    mode: 0400
+  register: cookiechange
+
+
+
+- name: Reset RabbitMQ on hosts where the cookie was changed
+  block:
+    - name: Forget Cluster nodes being reset
+      command: rabbitmqctl forget_cluster_node rabbit@{{ ansible_hostname }}
+      delegate_to: "{{ groups['rabbitmq'][0] }}"
+      ignore_errors: true
+
+    - name: RabbitMQ | sending sigterm to any running rabbitmq processes
+      shell: pkill -u rabbitmq || true
+
+    - name: RabitMQ | restarting rabbitmq-server
+      service:
+        name: rabbitmq-server
+        state: restarted
+
+    - name: RabbitMQ | stopping rabbitmq app
+      command: rabbitmqctl stop_app
+
+    - name: RabbitMQ | resetting rabbitmq app
+      command: rabbitmqctl reset
+  when: (inventory_hostname != play_hosts[0]) and
+        (cookiechange.changed)
+
+- name: Join RabbitMQ members to cluster
+  block:
+    - name: RabbitMQ | joining rabbitmq cluster
+      command: rabbitmqctl join_cluster 'rabbit@{{ hostvars[groups['rabbitmq'][0]]['ansible_hostname'] }}'
+      register: cluster_joined
+
+    - name: RabbitMQ | starting rabbitmq app
+      command: rabbitmqctl start_app
+  when: (inventory_hostname != play_hosts[0]) and
+        (cookiechange.changed)

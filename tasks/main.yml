@@ -1,0 +1,39 @@
+# Make sure hosts are reachable by name
+#- debug:
+#    var: hostvars
+
+- name: Add IP address of all hosts to all hosts
+  lineinfile:
+    dest: /etc/hosts
+    regexp: '.*{{ item }}$'
+    line: "{{item}} {{ hostvars[item].ansible_hostname }}"
+    state: present
+  when: hostvars[item].ansible_hostname is defined
+  with_items: "{{ groups.rabbitmq }}"
+
+# Install Repository, Prerequisites, and RabbitMQ for EL7
+- include_tasks: rabbitmq_packages_centos.yml
+
+# Start and enable rabbitmq service
+- include_tasks: rabbitmq_service_centos.yml
+
+- name: Run Cluster Tasks
+  block:
+    - name: Set master name as first host in inventory
+      set_fact:
+        master_node: "{{ groups['rabbitmq'][0] }}"
+
+    - include_tasks: rabbitmq_clustering_centos.yml
+  when: groups['rabbitmq'] | length > 1
+
+# Install RabbitMQ Plugins
+- include_tasks: rabbitmq_plugins.yml
+
+# Setup user and vhost
+- include_tasks: rabbitmq_user.yml
+
+# Setup HA policy
+- include_tasks: rabbitmq_ha_config.yml
+
+# Setup Queue policy
+- include_tasks: rabbitmq_queue_policy.yml

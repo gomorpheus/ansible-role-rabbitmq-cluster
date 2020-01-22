@@ -1,0 +1,33 @@
+---
+- name: RabbitMQ | setting morpheusAgentActions queue policies
+  rabbitmq_policy:
+      name: 'morpheusAgentActions'
+      pattern: 'morpheusAgentActions.*'
+      vhost: '{{ rabbitmq_vhost_name }}'
+      apply_to: 'queues'
+      priority: 1
+      tags:
+          expires: 1800000
+      state: present
+
+- name: RabbitMQ | setting morpheusAgentActions queue policies
+  rabbitmq_policy:
+      name: 'statCommands'
+      pattern: 'statCommands.*'
+      vhost: '{{ rabbitmq_vhost_name }}'
+      apply_to: 'queues'
+      priority: 1
+      tags:
+          expires: 1800000
+      state: present
+
+- name: RabbitMQ | setting monitorJobs queue policies
+  rabbitmq_policy:
+      name: 'monitorJobs'
+      pattern: 'monitorJobs.*'
+      vhost: '{{ rabbitmq_vhost_name }}'
+      apply_to: 'queues'
+      priority: 1
+      tags:
+          expires: 1800000
+      state: present

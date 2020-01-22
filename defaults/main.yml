@@ -1,0 +1,9 @@
+rabbitmq_group: rabbitmq
+rabbitmq_plugins:
+    - rabbitmq_stomp
+    - rabbitmq_management
+rabbitmq_vhost_name: defaultvhost
+rabbitmq_mgmt_user: adminuser
+rabbitmq_mgmt_password: adminpass
+rabbitmq_user: rabbitmquser
+rabbitmq_password: rabbitmqpassword
