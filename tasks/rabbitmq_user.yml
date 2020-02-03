@@ -1,4 +1,14 @@
 ---
+# TODO: Remove once ansible fixes their rabbitmq_user module, otherwise it will flag management user add as changed
+- name: RabbitMQ | Check for management user
+  shell: "rabbitmqctl list_users | grep '^{{ rabbitmq_mgmt_user }}'"
+  register: rabbitmq_list_users
+  delegate_to: "{{ groups[rabbitmq_group][0] }}"
+  run_once: true
+  ignore_errors: true
+  changed_when: rabbitmq_mgmt_user not in rabbitmq_list_users.stdout
+  check_mode: no
+
 - name: RabbitMQ | Add management user
   rabbitmq_user:
     user: "{{ rabbitmq_mgmt_user }}"
@@ -11,6 +21,8 @@
     state: present
   delegate_to: "{{ groups[rabbitmq_group][0] }}"
   run_once: true
+  when: (rabbitmq_mgmt_user not in rabbitmq_list_users.stdout) and
+        ("administrator" not in rabbitmq_list_users.stdout)
 
 - name: RabbitMQ | creating vhost
   rabbitmq_vhost:

@@ -4,8 +4,3 @@
     name: rabbitmq-server
     enabled: true
     state: started
-
-#- name: Start RabbitMQ Service
-#  systemd:
-#    name: rabbitmq-server
-#    state: started

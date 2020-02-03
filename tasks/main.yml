@@ -11,11 +11,15 @@
   when: hostvars[item].ansible_hostname is defined
   with_items: "{{ groups[rabbitmq_group] }}"
 
-# Install Repository, Prerequisites, and RabbitMQ for EL7
 - include_tasks: rabbitmq_packages_centos.yml
+  when: ansible_os_family == 'RedHat'
+
+# TODO: When Packagecloud release is fixed, re-enable
+# - include_tasks: rabbitmq_packages_ubuntu.yml
+#   when: ansible_os_family == 'Debian'
 
 # Start and enable rabbitmq service
-- include_tasks: rabbitmq_service_centos.yml
+- include_tasks: rabbitmq_service.yml
 
 - name: Run Cluster Tasks
   block:
