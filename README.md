@@ -19,3 +19,13 @@ Currently this is pinned to the 3.7 branch of RabbitMQ.  Ansible doesn't work pr
 |rabbitmq_mgmt_password|Y|adminpass|RabbitMQ admin password|
 |rabbitmq_user|Y|rabbitmquser|RabbitMQ user|
 |rabbitmq_password|Y|rabbitmqpassword|RabbitMQ user password|
+
+## RabbitMQ Installation
+
+The intended purpose of this role is to create a RabbitMQ cluster for use with Morpheus.  As such, it is tailored to the needs of that platform.
+
+The two use cases of RabbitMQ with HA deployments of Morpheus are: Internal and External.  Internal means running on the UI nodes themselves, and external means running on different instances altogether.
+
+## Morpheus Integration
+
+Supply Morpheus with the credentials in `rabbitmq_user` and `rabbitmq_password` and the vhost `rabbitmq_vhost` in order to use the cluster.
