@@ -55,7 +55,7 @@
 - name: Join RabbitMQ members to cluster
   block:
     - name: RabbitMQ | joining rabbitmq cluster
-      command: rabbitmqctl join_cluster 'rabbit@{{ hostvars[groups['rabbitmq'][0]]['ansible_hostname'] }}'
+      command: rabbitmqctl join_cluster 'rabbit@{{ hostvars[groups[rabbitmq_group][0]]['ansible_hostname'] }}'
       register: cluster_joined
 
     - name: RabbitMQ | starting rabbitmq app

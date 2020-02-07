@@ -26,6 +26,17 @@ The intended purpose of this role is to create a RabbitMQ cluster for use with M
 
 The two use cases of RabbitMQ with HA deployments of Morpheus are: Internal and External.  Internal means running on the UI nodes themselves, and external means running on different instances altogether.
 
+## TLS Configuration
+
+This role will generate a self-signed cert for each node if enabledusing the following variables.
+
+- rabbitmq_enable_tls: true
+- rabbitmq_generate_self_signed_cert: true
+
 ## Morpheus Integration
 
 Supply Morpheus with the credentials in `rabbitmq_user` and `rabbitmq_password` and the vhost `rabbitmq_vhost` in order to use the cluster.
+
+## Testing
+
+To test a TLS enabled cluster, make sure you have molecule installed and run `molecule test -s tls_cluster`

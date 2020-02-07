@@ -1,14 +1,15 @@
 # Make sure hosts are reachable by name
-#- debug:
-#    var: hostvars
+# - debug:
+#     var: hostvars
 
 - name: Add IP address of all hosts to all hosts
   lineinfile:
     dest: /etc/hosts
     regexp: '.*{{ item }}$'
-    line: "{{item}} {{ hostvars[item].ansible_hostname }}"
+    line: "{{ item }} {{ hostvars[item].ansible_hostname }}"
     state: present
-  when: hostvars[item].ansible_hostname is defined
+  when: (hostvars[item].ansible_hostname is defined) and
+        (ansible_virtualization_type != 'docker')
   with_items: "{{ groups[rabbitmq_group] }}"
 
 - include_tasks: rabbitmq_packages_centos.yml
@@ -17,6 +18,13 @@
 # TODO: When Packagecloud release is fixed, re-enable
 # - include_tasks: rabbitmq_packages_ubuntu.yml
 #   when: ansible_os_family == 'Debian'
+
+# Install RabbitMQ Plugins
+- include_tasks: rabbitmq_plugins.yml
+
+# TLS tasks
+- include_tasks: rabbitmq_tls.yml
+  when: rabbitmq_enable_tls
 
 # Start and enable rabbitmq service
 - include_tasks: rabbitmq_service.yml
@@ -28,10 +36,7 @@
         master_node: "{{ groups[rabbitmq_group][0] }}"
 
     - include_tasks: rabbitmq_clustering_centos.yml
-  when: groups['rabbitmq'] | length > 1
-
-# Install RabbitMQ Plugins
-- include_tasks: rabbitmq_plugins.yml
+  when: groups[rabbitmq_group] | length > 1
 
 # Setup user and vhost
 - include_tasks: rabbitmq_user.yml

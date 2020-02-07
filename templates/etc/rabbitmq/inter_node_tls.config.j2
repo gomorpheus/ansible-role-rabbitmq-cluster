@@ -1,0 +1,18 @@
+[
+  {server, [
+    {cacertfile, "{{ rabbitmq_self_signed_cabundle }}"},
+    {certfile, "{{ rabbitmq_self_signed_crt }}"},
+    {keyfile,  "{{ rabbitmq_self_signed_priv }}"},
+    {secure_renegotiate, true},
+    {verify, {{ rabbitmq_tls_verify }}},
+    {fail_if_no_peer_cert, {{ rabbitmq_fail_if_no_peer_cert|lower }}}
+  ]},
+  {client, [
+    {cacertfile, "{{ rabbitmq_self_signed_cabundle }}"},
+    {certfile, "{{ rabbitmq_self_signed_crt }}"},
+    {keyfile,  "{{ rabbitmq_self_signed_priv }}"},
+    {secure_renegotiate, true},
+    {verify, {{ rabbitmq_tls_verify }}},
+    {fail_if_no_peer_cert, {{ rabbitmq_fail_if_no_peer_cert|lower }}}
+  ]}
+].

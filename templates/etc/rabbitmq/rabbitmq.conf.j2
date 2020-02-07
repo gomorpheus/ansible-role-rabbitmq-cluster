@@ -1,0 +1,13 @@
+listeners.ssl.default = {{ rabbitmq_tls_port }}
+ssl_options.cacertfile = {{ rabbitmq_self_signed_cabundle }}
+ssl_options.certfile = {{ rabbitmq_self_signed_crt }}
+ssl_options.keyfile = {{ rabbitmq_self_signed_priv }}
+ssl_options.verify = {{ rabbitmq_tls_verify }}
+ssl_options.fail_if_no_peer_cert = {{ rabbitmq_fail_if_no_peer_cert|lower }}
+stomp.listeners.ssl.1 = 61614
+{% if "rabbitmq_management" in rabbitmq_plugins %}
+{% if rabbitmq_mgmt_nontls_localhost_only is sameas true %}
+management.tcp.ip = 127.0.0.1
+{% endif %}
+management.ssl.port = {{ rabbitmq_mgmt_ssl_port }}
+{% endif %}

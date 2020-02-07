@@ -1,0 +1,9 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    rabbitmq_group: all
+    rabbitmq_enable_tls: true
+    rabbitmq_generate_self_signed_cert: true
+  roles:
+    - role: ansible-role-rabbitmq-cluster
