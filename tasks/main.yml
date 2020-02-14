@@ -12,7 +12,8 @@
         (ansible_virtualization_type != 'docker')
   with_items: "{{ groups[rabbitmq_group] }}"
 
-- include_tasks: rabbitmq_packages_centos.yml
+- name: Include rabbitmq_packages_centos.yml
+  include_tasks: rabbitmq_packages_centos.yml
   when: ansible_os_family == 'RedHat'
 
 # TODO: When Packagecloud release is fixed, re-enable
@@ -20,20 +21,25 @@
 #   when: ansible_os_family == 'Debian'
 
 # Install RabbitMQ Plugins
-- include_tasks: rabbitmq_plugins.yml
+- name: Include rabbitmq_plugins.yml
+  include_tasks: rabbitmq_plugins.yml
 
-- include_tasks: rabbitmq_tls_self_signed.yml
+- name: Include rabbitmq_tls_self_signed.yml
+  include_tasks: rabbitmq_tls_self_signed.yml
   when: rabbitmq_tls_generate_self_signed_cert
 
-- include_tasks: rabbitmq_install_custom_cert.yml
+- name: Include rabbitmq_install_custom_cert.yml
+  include_tasks: rabbitmq_install_custom_cert.yml
   when: rabbitmq_tls_use_custom_cert
 
 # TLS tasks
-- include_tasks: rabbitmq_tls.yml
+- name: Include rabbitmq_tls.yml
+  include_tasks: rabbitmq_tls.yml
   when: rabbitmq_tls_enable
 
 # Start and enable rabbitmq service
-- include_tasks: rabbitmq_service.yml
+- name: Include rabbitmq_service.yml
+  include_tasks: rabbitmq_service.yml
 
 - name: Run Cluster Tasks
   block:
@@ -41,7 +47,8 @@
       set_fact:
         master_node: "{{ groups[rabbitmq_group][0] }}"
 
-    - include_tasks: rabbitmq_clustering_centos.yml
+    - name: Include rabbitmq_clustering_centos.yml
+      include_tasks: rabbitmq_clustering_centos.yml
   when: groups[rabbitmq_group] | length > 1
 
 # Setup user and vhost
