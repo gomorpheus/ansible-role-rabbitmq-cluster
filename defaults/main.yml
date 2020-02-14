@@ -8,21 +8,30 @@ rabbitmq_mgmt_password: adminpass
 rabbitmq_user: rabbitmquser
 rabbitmq_password: rabbitmqpassword
 rabbitmq_linux_user: rabbitmq
+rabbitmq_centos_package: "rabbitmq-server-3.7*"
 
 # TLS Variables
-rabbitmq_enable_tls: false
+rabbitmq_tls_enable: false
 rabbitmq_tls_port: 5671
 rabbitmq_tls_verify: verify_none
-rabbitmq_fail_if_no_peer_cert: false
-rabbitmq_disable_non_tls: true
-rabbitmq_mgmt_nontls_localhost_only: true
-rabbitmq_mgmt_ssl_port: 15671
-rabbitmq_generate_self_signed_cert: false
-rabbitmq_self_signed_crt_path: /etc/pki/tls/certs
-rabbitmq_self_signed_csr_path: /etc/pki/tls/certs
-rabbitmq_self_signed_priv_path: /etc/pki/tls/private
-rabbitmq_self_signed_basename: rabbitmq_selfsigned
-rabbitmq_self_signed_crt: "{{ rabbitmq_self_signed_crt_path }}/{{ rabbitmq_self_signed_basename }}.crt"
-rabbitmq_self_signed_csr: "{{ rabbitmq_self_signed_csr_path }}/{{ rabbitmq_self_signed_basename }}.csr"
-rabbitmq_self_signed_priv: "{{ rabbitmq_self_signed_priv_path }}/{{ rabbitmq_self_signed_basename }}.pem"
-rabbitmq_self_signed_cabundle: /etc/pki/tls/certs/ca-bundle.crt
+rabbitmq_tls_fail_if_no_peer_cert: false
+rabbitmq_tls_disable_non_tls: true
+rabbitmq_tls_mgmt_nontls_localhost_only: true
+rabbitmq_tls_mgmt_ssl_port: 15671
+rabbitmq_tls_use_custom_cert: false
+rabbitmq_tls_generate_self_signed_cert: false
+rabbitmq_tls_crt_path: /etc/pki/tls/certs
+rabbitmq_tls_priv_path: /etc/pki/tls/private
+rabbitmq_tls_self_signed_csr_path: /etc/pki/tls/certs
+rabbitmq_tls_self_signed_basename: rabbitmq_selfsigned
+rabbitmq_tls_self_signed_crt: "{{ rabbitmq_tls_crt_path }}/{{ rabbitmq_tls_self_signed_basename }}.crt"
+rabbitmq_tls_self_signed_csr: "{{ rabbitmq_tls_self_signed_csr_path }}/{{ rabbitmq_tls_self_signed_basename }}.csr"
+rabbitmq_tls_self_signed_priv: "{{ rabbitmq_tls_priv_path }}/{{ rabbitmq_tls_self_signed_basename }}.pem"
+rabbitmq_tls_default_cabundle: /etc/pki/tls/certs/ca-bundle.crt
+rabbitmq_tls_self_signed_cabundle: "{{ rabbitmq_tls_default_cabundle }}"
+rabbitmq_tls_custom_cabundle_filename: ""
+rabbitmq_tls_custom_cert_filename: ""
+rabbitmq_tls_custom_priv_filename: ""
+rabbitmq_tls_cabundle: ""
+rabbitmq_tls_cert: ""
+rabbitmq_tls_private_key: ""

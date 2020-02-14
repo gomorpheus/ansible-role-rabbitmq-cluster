@@ -5,6 +5,7 @@ driver:
   name: docker
 lint:
   name: yamllint
+  enabled: false
 platforms:
   - name: rabbit_tls1
     image: centos:7

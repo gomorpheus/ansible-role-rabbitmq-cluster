@@ -1,6 +1,6 @@
 # NOTE: the following path is system dependent and will change between Erlang
 #       versions
-ERL_SSL_PATH="{{ rabbitmq_erlang_ssl_dir }}"
+ERL_SSL_PATH="{{ rabbitmq_tls_erlang_ssl_dir }}"
 
 # -pa $ERL_SSL_PATH prepends the directory ERL_SSL_PATH points at to the code path
 # -proto_dist inet_tls tells the runtime to encrypt inter-node communication

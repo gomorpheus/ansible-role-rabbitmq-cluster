@@ -22,9 +22,15 @@
 # Install RabbitMQ Plugins
 - include_tasks: rabbitmq_plugins.yml
 
+- include_tasks: rabbitmq_tls_self_signed.yml
+  when: rabbitmq_tls_generate_self_signed_cert
+
+- include_tasks: rabbitmq_install_custom_cert.yml
+  when: rabbitmq_tls_use_custom_cert
+
 # TLS tasks
 - include_tasks: rabbitmq_tls.yml
-  when: rabbitmq_enable_tls
+  when: rabbitmq_tls_enable
 
 # Start and enable rabbitmq service
 - include_tasks: rabbitmq_service.yml

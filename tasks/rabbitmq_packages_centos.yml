@@ -35,5 +35,5 @@
 
 - name: Install RabbitMQ
   package:
-    name: rabbitmq-server-3.7*
+    name: "{{ rabbitmq_centos_package }}"
     state: present

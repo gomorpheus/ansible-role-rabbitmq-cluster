@@ -5,7 +5,7 @@
       pattern: 'morpheusAgentActions.*'
       vhost: '{{ rabbitmq_vhost_name }}'
       apply_to: 'queues'
-      priority: 1
+      priority: '1'
       tags:
           expires: 1800000
       state: present
@@ -16,7 +16,7 @@
       pattern: 'statCommands.*'
       vhost: '{{ rabbitmq_vhost_name }}'
       apply_to: 'queues'
-      priority: 1
+      priority: '1'
       tags:
           expires: 1800000
       state: present
@@ -27,7 +27,7 @@
       pattern: 'monitorJobs.*'
       vhost: '{{ rabbitmq_vhost_name }}'
       apply_to: 'queues'
-      priority: 1
+      priority: '1'
       tags:
           expires: 1800000
       state: present

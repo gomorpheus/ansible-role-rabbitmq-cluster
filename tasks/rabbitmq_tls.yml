@@ -1,43 +1,21 @@
 ---
-- name: Ensure Python cryptography module is installed
-  package:
-    name: python2-cryptography
-    state: present
-
-- name: Generate Self Signed Private Key
-  openssl_privatekey:
-    path: "{{ rabbitmq_self_signed_priv }}"
-    owner: "{{ rabbitmq_linux_user }}"
-
-- name: Generate Self Signed CSR
-  openssl_csr:
-    path: "{{ rabbitmq_self_signed_csr }}"
-    privatekey_path: "{{ rabbitmq_self_signed_priv }}"
-    common_name: localhost
-    owner: "{{ rabbitmq_linux_user }}"
-
-- name: Generate Self Signed Certificate
-  openssl_certificate:
-    path: "{{ rabbitmq_self_signed_crt }}"
-    privatekey_path: "{{ rabbitmq_self_signed_priv }}"
-    csr_path: "{{ rabbitmq_self_signed_csr }}"
-    owner: "{{ rabbitmq_linux_user }}"
-    provider: selfsigned
-  when: rabbitmq_generate_self_signed_cert
-
 - name: Determine Erlang ssl directory
   block:
     - name: Find Erlang SSL Directory
       command: find /usr/lib64/erlang -regextype egrep -regex ".*/ssl.*/ebin$"
-      register: rabbitmq_find_ssl
+      register: rabbitmq_tls_find_ssl
       changed_when: false
 
     - name: Set Erlang SSL Directory Fact
       set_fact:
-        rabbitmq_erlang_ssl_dir: "{{ rabbitmq_find_ssl.stdout }}"
+        rabbitmq_tls_erlang_ssl_dir: "{{ rabbitmq_tls_find_ssl.stdout }}"
 
-- debug:
-    var: rabbitmq_erlang_ssl_dir
+#- debug:
+#    var: rabbitmq_erlang_ssl_dir
+
+#- name: Set paths for SSL certificates
+#  set_fact:
+
 
 - name: Copy config files for TLS
   template:
