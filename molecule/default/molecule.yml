@@ -5,9 +5,38 @@ driver:
   name: docker
 lint:
   name: yamllint
+  enabled: false
 platforms:
-  - name: instance
+  - name: rabbit1
     image: centos:7
+    command: /sbin/init
+    tmpfs:
+      - /run
+      - /tmp
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    networks:
+      - name: rabbit
+  - name: rabbit2
+    image: centos:7
+    command: /sbin/init
+    tmpfs:
+      - /run
+      - /tmp
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    networks:
+      - name: rabbit
+  - name: rabbit3
+    image: centos:7
+    command: /sbin/init
+    tmpfs:
+      - /run
+      - /tmp
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    networks:
+      - name: rabbit
 provisioner:
   name: ansible
   lint:

@@ -1,5 +1,7 @@
 ---
 - name: Converge
   hosts: all
+  vars:
+    rabbitmq_group: all
   roles:
     - role: ansible-role-rabbitmq-cluster
