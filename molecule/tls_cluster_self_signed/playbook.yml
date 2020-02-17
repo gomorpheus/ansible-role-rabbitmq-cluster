@@ -5,7 +5,5 @@
     rabbitmq_group: all
     rabbitmq_tls_enable: true
     rabbitmq_tls_generate_self_signed_cert: true
-
-#    rabbitmq_centos_package: "rabbitmq-server"
   roles:
     - role: ansible-role-rabbitmq-cluster

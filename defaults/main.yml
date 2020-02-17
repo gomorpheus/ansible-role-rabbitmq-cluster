@@ -14,7 +14,7 @@ rabbitmq_centos_package: "rabbitmq-server-3.7*"
 rabbitmq_tls_enable: false
 rabbitmq_tls_port: 5671
 rabbitmq_tls_verify: verify_none
-rabbitmq_tls_fail_if_no_peer_cert: false
+rabbitmq_tls_fail_if_no_peer_cert: true
 rabbitmq_tls_disable_non_tls: true
 rabbitmq_tls_mgmt_nontls_localhost_only: true
 rabbitmq_tls_mgmt_ssl_port: 15671
