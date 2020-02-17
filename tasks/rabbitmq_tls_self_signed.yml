@@ -1,0 +1,32 @@
+---
+- name: Ensure Python cryptography module is installed
+  package:
+    name: python2-cryptography
+    state: present
+
+- name: Generate Self Signed Private Key
+  openssl_privatekey:
+    path: "{{ rabbitmq_tls_self_signed_priv }}"
+    owner: "{{ rabbitmq_linux_user }}"
+    mode: 0600
+
+- name: Generate Self Signed CSR
+  openssl_csr:
+    path: "{{ rabbitmq_tls_self_signed_csr }}"
+    privatekey_path: "{{ rabbitmq_tls_self_signed_priv }}"
+    common_name: localhost
+    owner: "{{ rabbitmq_linux_user }}"
+
+- name: Generate Self Signed Certificate
+  openssl_certificate:
+    path: "{{ rabbitmq_tls_self_signed_crt }}"
+    privatekey_path: "{{ rabbitmq_tls_self_signed_priv }}"
+    csr_path: "{{ rabbitmq_tls_self_signed_csr }}"
+    owner: "{{ rabbitmq_linux_user }}"
+    provider: selfsigned
+
+- name: Set paths for SSL certificates
+  set_fact:
+    rabbitmq_tls_cabundle: "{{ rabbitmq_tls_self_signed_cabundle }}"
+    rabbitmq_tls_cert: "{{ rabbitmq_tls_self_signed_crt }}"
+    rabbitmq_tls_private_key: "{{ rabbitmq_tls_self_signed_priv }}"

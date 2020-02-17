@@ -1,0 +1,25 @@
+---
+- name: Determine Erlang ssl directory
+  block:
+    - name: Find Erlang SSL Directory
+      command: find /usr/lib64/erlang -regextype egrep -regex ".*/ssl.*/ebin$"
+      register: rabbitmq_tls_find_ssl
+      changed_when: false
+
+    - name: Set Erlang SSL Directory Fact
+      set_fact:
+        rabbitmq_tls_erlang_ssl_dir: "{{ rabbitmq_tls_find_ssl.stdout }}"
+
+- name: Copy config files for TLS
+  template:
+    src: etc/rabbitmq/{{ item }}.j2
+    dest: /etc/rabbitmq/{{ item }}
+    owner: "{{ rabbitmq_linux_user }}"
+    group: "{{ rabbitmq_linux_user }}"
+    mode: 0660
+  notify: restart rabbitmq
+  loop:
+    - advanced.config
+    - inter_node_tls.config
+    - rabbitmq-env.conf
+    - rabbitmq.conf

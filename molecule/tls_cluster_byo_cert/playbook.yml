@@ -1,0 +1,11 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    rabbitmq_group: all
+    rabbitmq_enable_tls: true
+    rabbitmq_tls_use_custom_cert: true
+    rabbitmq_tls_custom_cert_filename: cert.pem
+    rabbitmq_tls_custom_priv_filename: key.pem
+  roles:
+    - role: ansible-role-rabbitmq-cluster

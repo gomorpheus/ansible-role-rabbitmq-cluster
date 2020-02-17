@@ -1,0 +1,35 @@
+- name: CA Bundle - Set default
+  set_fact:
+    rabbitmq_tls_cabundle: "{{ rabbitmq_tls_default_cabundle }}"
+
+- name: Custom CA Bundle Config
+  block:
+    - name: Copy TLS bundle if desired
+      copy:
+        src: "files/{{ item }}"
+        dest: "{{ rabbitmq_tls_crt_path }}/{{ item }}"
+        owner: "{{ rabbitmq_linux_user }}"
+      loop:
+        - "{{ rabbitmq_tls_custom_cabundle_filename }}"
+
+    - name: Set CA bundle fact
+      set_fact:
+        rabbitmq_tls_cabundle: "{{ rabbitmq_tls_crt_path }}/{{ rabbitmq_tls_custom_cabundle_filename }}"
+  when: rabbitmq_tls_custom_cabundle_filename|length > 0
+
+- name: Copy Custom Certificate
+  copy:
+    src: "files/{{ item }}"
+    dest: "{{ rabbitmq_tls_crt_path }}/{{ item }}"
+    owner: "{{ rabbitmq_linux_user }}"
+  loop:
+    - "{{ rabbitmq_tls_custom_cert_filename }}"
+
+- name: Copy Custom Private Key
+  copy:
+    src: "files/{{ item }}"
+    dest: "{{ rabbitmq_tls_priv_path }}/{{ item }}"
+    owner: "{{ rabbitmq_linux_user }}"
+    mode: 0600
+  loop:
+    - "{{ rabbitmq_tls_custom_priv_filename }}"
