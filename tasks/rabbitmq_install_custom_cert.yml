@@ -33,3 +33,11 @@
     mode: 0600
   loop:
     - "{{ rabbitmq_tls_custom_priv_filename }}"
+
+- name: Set certificate fact
+  set_fact:
+    rabbitmq_tls_cert: "{{ rabbitmq_tls_crt_path }}/{{ rabbitmq_tls_custom_cert_filename }}"
+
+- name: Set private key fact
+  set_fact:
+    rabbitmq_tls_private_key: "{{ rabbitmq_tls_priv_path }}/{{ rabbitmq_tls_custom_priv_filename }}"
