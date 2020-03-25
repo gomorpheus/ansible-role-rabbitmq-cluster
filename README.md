@@ -13,7 +13,8 @@ Currently this is pinned to the 3.7 branch of RabbitMQ.  Ansible doesn't work pr
 |Variable|Default|Description|
 |--------|-------|-----------|
 |rabbitmq_group|rabbitmq|Name of the inventory group containing the rabbit hosts|
-|rabbitmq_plugins|rabbitmq_stomp|List of plugins to enable.  Morpheus needs management and stomp.|
+|rabbitmq_plugins_enable_management|false|Flag to enable RabbitMQ Managment|
+|rabbitmq_plugins_enable_tls_cert_auth|false|Flag to enable rabbitmq_auth_mechanism_ssl plugin for certificate auth|
 |rabbitmq_vhost_name|defaultvhost|RabbitMQ vhost name|
 |rabbitmq_mgmt_user|adminuser|RabbitMQ admin user|
 |rabbitmq_mgmt_password|adminpass|RabbitMQ admin password|
@@ -23,7 +24,8 @@ Currently this is pinned to the 3.7 branch of RabbitMQ.  Ansible doesn't work pr
 |rabbitmq_centos_package|rabbitmq-server-3.7*|CentOS package variable.  Pinned to 3.7* for now until an Ansible bug is fixed|
 |rabbitmq_tls_enable|false|Enable TLS|
 |rabbitmq_tls_port|5671|TLS Port|
-|rabbitmq_tls_verify|verify_none|Verify TLS boolean|
+|rabbitmq_tls_verify|verify_none|TLS verify option|
+|rabbitmq_tls_verify_cluster|verify_none|Inter-cluster TLS verify option|
 |rabbitmq_tls_fail_if_no_peer_cert|true|Disallows connections to non-TLS cluster members|
 |rabbitmq_tls_disable_non_tls|true|Disables non-TLS ports to RabbitMQ nodes|
 |rabbitmq_tls_mgmt_nontls_localhost_only|true|Disable management plugin non-TLS access to any host but localhost|
@@ -45,6 +47,7 @@ Currently this is pinned to the 3.7 branch of RabbitMQ.  Ansible doesn't work pr
 |rabbitmq_tls_cabundle|""|Default for generated fact within the role|
 |rabbitmq_tls_cert|""|Default for generated fact within the role|
 |rabbitmq_tls_private_key|""|Default for generated fact within the role|
+|rabbitmq_tls_client_cert_only|false|Toggle for certificate authentication, if true it will disable PLAIN authentication and allow only EXTERNAL|
 
 ## RabbitMQ Installation
 
@@ -56,11 +59,19 @@ The two use cases of RabbitMQ with HA deployments of Morpheus are: Internal and 
 ### Self Signed Certificate
 This role will generate a self-signed cert for each node if enabled using the following variables.
 
-- rabbitmq_enable_tls: true
-- rabbitmq_generate_self_signed_cert: true
+- `rabbitmq_enable_tls: true`
+- `rabbitmq_generate_self_signed_cert: true`
 
 ### Custom TLS Certificate
 This role will use a supplied certificate.  
+
+### Custom TLS Certificate with Certificate Authentication
+This role can configure RabbitMQ to use TLS certificate authentication to AMQP.  The following vars must be set:
+* `rabbitmq_tls_verify: verify_peer`
+* `rabbitmq_plugins_enable_tls_cert_auth: true`
+* `rabbitmq_tls_client_cert_only: true`
+
+You must supply CA, server certs and keys, see `molecule/tls_cluster_byo_cert` for an example.  This example used a self signed certificate with the supplied CA and client certs.
 
 ## Examples
 Check out the examples in `molecule/*`.  The current examples, with example files and variables, are in the integrated tests.

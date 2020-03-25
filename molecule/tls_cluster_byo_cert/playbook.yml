@@ -3,9 +3,14 @@
   hosts: all
   vars:
     rabbitmq_group: all
-    rabbitmq_enable_tls: true
+    rabbitmq_plugins_enable_management: true
+    rabbitmq_plugins_enable_tls_cert_auth: true
+    rabbitmq_tls_enable: true
     rabbitmq_tls_use_custom_cert: true
+    rabbitmq_tls_custom_cabundle_filename: ca.pem
     rabbitmq_tls_custom_cert_filename: cert.pem
     rabbitmq_tls_custom_priv_filename: key.pem
+    rabbitmq_tls_client_cert_only: true
+    rabbitmq_tls_verify: verify_peer
   roles:
     - role: ansible-role-rabbitmq-cluster
