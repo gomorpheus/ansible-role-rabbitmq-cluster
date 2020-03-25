@@ -4,7 +4,7 @@
     {certfile, "{{ rabbitmq_tls_cert }}"},
     {keyfile,  "{{ rabbitmq_tls_private_key }}"},
     {secure_renegotiate, true},
-    {verify, {{ rabbitmq_tls_verify }}},
+    {verify, {{ rabbitmq_tls_verify_cluster }}},
     {fail_if_no_peer_cert, {{ rabbitmq_tls_fail_if_no_peer_cert|lower }}}
   ]},
   {client, [
@@ -12,7 +12,7 @@
     {certfile, "{{ rabbitmq_tls_cert }}"},
     {keyfile,  "{{ rabbitmq_tls_private_key }}"},
     {secure_renegotiate, true},
-    {verify, {{ rabbitmq_tls_verify }}},
+    {verify, {{ rabbitmq_tls_verify_cluster }}},
     {fail_if_no_peer_cert, {{ rabbitmq_tls_fail_if_no_peer_cert|lower }}}
   ]}
 ].

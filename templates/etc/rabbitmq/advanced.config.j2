@@ -1,4 +1,8 @@
 [
-  {rabbit, [{tcp_listeners, []}]},
+  {rabbit, [{tcp_listeners, []}
+{% if rabbitmq_tls_client_cert_only %}
+,{auth_mechanisms, ['EXTERNAL']}
+{% endif %}
+  ]},
   {rabbitmq_stomp, [{tcp_listeners, []}]}
 ].

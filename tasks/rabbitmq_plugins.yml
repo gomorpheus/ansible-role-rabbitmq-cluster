@@ -1,4 +1,21 @@
 ---
+- name: RabbitMQ | Add default plugins
+  set_fact:
+    rabbitmq_plugins: '{{ rabbitmq_plugins_default }}'
+
+- name: RabbitMQ | Add management plugin
+  set_fact:
+    rabbitmq_plugins: '{{ rabbitmq_plugins + rabbitmq_plugins_management }}'
+  when: rabbitmq_plugins_enable_management
+
+- name: RabbitMQ | Add TLS cert auth plugin
+  set_fact:
+    rabbitmq_plugins: '{{ rabbitmq_plugins + rabbitmq_plugins_tls_cert_auth }}'
+  when: rabbitmq_plugins_enable_tls_cert_auth
+
+- debug:
+    var: rabbitmq_plugins
+
 - name: RabbitMQ | install rabbitMQ admin
   rabbitmq_plugin:
       names: "{{ rabbitmq_plugins | join(',') }}"
