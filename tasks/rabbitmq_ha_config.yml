@@ -3,7 +3,7 @@
       name: 'ha-all'
       pattern: '.*'
       vhost: '{{ rabbitmq_vhost_name }}'
-      priority: '2'
+      priority: '1'
       tags: ha-mode=all, ha-sync-mode=automatic
       state: present
   delegate_to: "{{ groups[rabbitmq_group][0] }}"
