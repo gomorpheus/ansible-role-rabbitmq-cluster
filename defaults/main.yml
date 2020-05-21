@@ -14,7 +14,7 @@ rabbitmq_mgmt_password: adminpass
 rabbitmq_user: rabbitmquser
 rabbitmq_password: rabbitmqpassword
 rabbitmq_linux_user: rabbitmq
-rabbitmq_centos_package: "rabbitmq-server-3.7*"
+rabbitmq_centos_package: "rabbitmq-server-3.8*"
 
 # TLS Variables
 rabbitmq_tls_enable: false
