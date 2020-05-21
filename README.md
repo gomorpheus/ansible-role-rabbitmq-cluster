@@ -6,7 +6,7 @@ Creates a RabbitMQ Cluster for use with n-node HA deployments of the Morpheus Cl
 
 ## Supported Versions
 
-Currently this is pinned to the 3.7 branch of RabbitMQ.  Ansible doesn't work properly with 3.8 as of yet.
+Currently this is pinned to the 3.8 branch of RabbitMQ.  Tested with the latest version of Ansible (2.9.9), and it seems to work fine.
 
 ## Role Variables
 
