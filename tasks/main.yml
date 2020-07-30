@@ -1,11 +1,23 @@
-- name: Add IP address of all hosts to all hosts
+- name: Add public IP address of all hosts to all hosts
   lineinfile:
     dest: /etc/hosts
     regexp: '.*{{ item }}$'
     line: "{{ item }} {{ hostvars[item].ansible_hostname }}"
     state: present
   when: (hostvars[item].ansible_hostname is defined) and
-        (ansible_virtualization_type != 'docker')
+        (ansible_virtualization_type != 'docker') and
+        (not rabbitmq_use_internal_ip|bool)
+  with_items: "{{ groups[rabbitmq_group] }}"
+
+- name: Add private IP address of all hosts to all hosts
+  lineinfile:
+    dest: /etc/hosts
+    regexp: '.*{{ item }}$'
+    line: "{{ hostvars[item]['ansible_default_ipv4']['address'] }} {{ hostvars[item].ansible_hostname }}"
+    state: present
+  when: (hostvars[item].ansible_hostname is defined) and
+        (ansible_virtualization_type != 'docker') and
+        (rabbitmq_use_internal_ip|bool)
   with_items: "{{ groups[rabbitmq_group] }}"
 
 - name: Include rabbitmq_packages_centos.yml
