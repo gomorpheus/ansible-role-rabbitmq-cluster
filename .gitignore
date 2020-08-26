@@ -3,4 +3,4 @@ venv
 /tests
 .vscode
 .terraform
-tftesting/*
+tftesting
