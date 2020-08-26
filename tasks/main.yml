@@ -45,11 +45,15 @@
   include_tasks: rabbitmq_tls.yml
   when: rabbitmq_tls_enable
 
+- name: Run Cluster Tasks for EC2 cluster
+  include_tasks: rabbitmq_ec2_cluster.yml
+  when: rabbitmq_clustering_type == "ec2"
+
 # Start and enable rabbitmq service
 - name: Include rabbitmq_service.yml
   include_tasks: rabbitmq_service.yml
 
-- name: Run Cluster Tasks
+- name: Run Cluster Tasks for static cluster
   block:
     - name: Set master name as first host in inventory
       set_fact:
@@ -57,7 +61,8 @@
 
     - name: Include rabbitmq_clustering_centos.yml
       include_tasks: rabbitmq_clustering_centos.yml
-  when: groups[rabbitmq_group] | length > 1
+  when: (groups[rabbitmq_group] | length > 1) and
+        (rabbitmq_clustering_type == "static")
 
 # Setup user and vhost
 - include_tasks: rabbitmq_user.yml
