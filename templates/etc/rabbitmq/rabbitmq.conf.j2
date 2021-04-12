@@ -16,8 +16,10 @@ management.ssl.port = {{ rabbitmq_tls_mgmt_ssl_port }}
 {% if 'ec2' == rabbitmq_clustering_type %}
 cluster_formation.peer_discovery_backend = aws
 cluster_formation.aws.region = {{ rabbitmq_discovery_ec2_region }}
+{% if rabbitmq_discovery_ec2_access_key|length %}
 cluster_formation.aws.access_key_id = {{ rabbitmq_discovery_ec2_access_key }}
 cluster_formation.aws.secret_key = {{ rabbitmq_discovery_ec2_secret }}
+{% endif %}
 {% if rabbitmq_discovery_ec2_autoscaling_group is sameas true %}
 cluster_formation.aws.use_autoscaling_group = true
 {% endif %}
