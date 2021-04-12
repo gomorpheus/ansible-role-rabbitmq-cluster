@@ -13,6 +13,11 @@
     rabbitmq_plugins: '{{ rabbitmq_plugins + rabbitmq_plugins_tls_cert_auth }}'
   when: rabbitmq_plugins_enable_tls_cert_auth
 
+- name: RabbitMQ | Add EC2 Peer Discovery plugin
+  set_fact:
+    rabbitmq_plugins: '{{ rabbitmq_plugins + rabbitmq_plugins_ec2_discovery }}'
+  when: rabbitmq_clustering_type == "ec2"
+
 - debug:
     var: rabbitmq_plugins
 
