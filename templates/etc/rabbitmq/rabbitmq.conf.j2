@@ -14,6 +14,9 @@ management.tcp.ip = 127.0.0.1
 management.ssl.port = {{ rabbitmq_tls_mgmt_ssl_port }}
 {% endif %}
 {% if 'ec2' == rabbitmq_clustering_type %}
+{% if rabbitmq_discovery_ec2_node_autoremove is sameas true %}
+cluster_formation.node_cleanup.only_log_warning = false
+{% endif %}
 cluster_formation.peer_discovery_backend = aws
 cluster_formation.aws.region = {{ rabbitmq_discovery_ec2_region }}
 {% if rabbitmq_discovery_ec2_access_key|length %}

@@ -25,6 +25,7 @@ rabbitmq_discovery_ec2_region: us-east-1
 rabbitmq_discovery_ec2_instance_tags: {}
 rabbitmq_discovery_ec2_access_key: ""
 rabbitmq_discovery_ec2_secret: ""
+rabbitmq_discovery_ec2_node_autoremove: false
 
 # TLS Variables
 rabbitmq_tls_enable: false
