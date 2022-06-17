@@ -2,6 +2,7 @@
   apt:
     name: "{{ item }}"
     state: present
+    update_cache: true
   loop:
     - debian-archive-keyring
     - apt-transport-https
@@ -9,28 +10,24 @@
 - name: Add RabbitMQ Erlang repository GPG Key
   apt_key:
     state: present
-    url: https://packagecloud.io/rabbitmq/erlang/gpgkey
+    url: https://github.com/rabbitmq/signing-keys/releases/download/2.0/rabbitmq-release-signing-key.asc
 
 - name: Add RabbitMQ repository GPG Key
   apt_key:
     state: present
-    url: https://github.com/rabbitmq/signing-keys/releases/download/2.0/rabbitmq-release-signing-key.asc
+    url: https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey
 
 - name: Add RabbitMQ Erlang repository
   apt_repository:
-    repo: deb https://packagecloud.io/rabbitmq/erlang/ubuntu bionic main
+    repo: ppa:rabbitmq/rabbitmq-erlang
     state: present
-    # filename: rabbitmq-erlang
 
 - name: Add RabbitMQ repository
   apt_repository:
-    repo: deb https://packagecloud.io/rabbitmq/rabbitmq-server/ubuntu bionic main
+    repo: "deb https://packagecloud.io/rabbitmq/rabbitmq-server/ubuntu {{ansible_distribution_release}} main"
     state: present
-    # filename: rabbitmq-server
-
-- meta: end play
 
 - name: Install RabbitMQ
   package:
-    name: rabbitmq-server-3.7*
+    name: rabbitmq-server
     state: present

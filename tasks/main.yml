@@ -24,9 +24,8 @@
   include_tasks: rabbitmq_packages_centos.yml
   when: ansible_os_family == 'RedHat'
 
-# TODO: When Packagecloud release is fixed, re-enable
-# - include_tasks: rabbitmq_packages_ubuntu.yml
-#   when: ansible_os_family == 'Debian'
+- include_tasks: rabbitmq_packages_ubuntu.yml
+  when: ansible_os_family == 'Debian'
 
 # Install RabbitMQ Plugins
 - name: Include rabbitmq_plugins.yml
